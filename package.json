@@ -1,0 +1,14 @@
+{
+  "name": "exerciseOne",
+  "version": "1.0.0",
+  "description": "NodeJsMay2015 Excercise 1",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Manuel Lerena",
+  "license": "ISC",
+  "dependencies": {
+    "underscore": "^1.8.3"
+  }
+}
