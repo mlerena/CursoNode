@@ -1,6 +1,5 @@
 'use strict'
 
-var times = require('./modules/times');
-times.init();
+require('./modules/times');
 var theString = "theString";
 console.log(theString.times(5));

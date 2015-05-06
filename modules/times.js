@@ -5,16 +5,13 @@
  times:
  i.e: “*”.times(5) ///prints “*****”
  */
-module.exports = {
 
-  init: function() {
-    String.prototype.times = function (number) {
-      var i = 0;
-      var output = ''
-      for (i; i < number; i++) {
-        output += this;
-      }
-     return output;
-    }
+String.prototype.times = function (number) {
+  var i = 0;
+  var output = []
+  for (i; i < number; i++) {
+    output.push(this);
   }
+  return output.join('');
 }
+
