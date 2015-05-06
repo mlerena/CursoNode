@@ -14,7 +14,7 @@ module.exports = {
       for (i; i < number; i++) {
         output += this;
       }
-      console.log(output);
+     return output;
     }
   }
 }

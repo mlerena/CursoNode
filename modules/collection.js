@@ -13,13 +13,12 @@ Collection.prototype.getItemById = function (id) {
   return this._collection[parseInt(id) - 1];
 }
 
-Collection.prototype.printMenu = function () {
+Collection.prototype.print = function () {
 
-  courses.forEach(function (course, index) {
-    process.stdout.write('('. index + 1 + '). ' + course.getName() + '\n');
+  this._collection.forEach(function (item, index) {
+    var id =  parseInt(index) + 1;
+    process.stdout.write('(' + id + '). ' + item.getName() + '\n');
   });
-  process.stdout.write('"exit" to return \n');
-
 }
 
 module.exports = Collection;
