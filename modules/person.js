@@ -5,10 +5,10 @@ var events = require('events');
 
 var Person = function(options) {
 
-  this._name = options.name || '';
-  this._address = options.address || '';
-  this._birthDate = new Date(options.birthDate);
-  this.friends = options.friends || [];
+  this._name = options._name || '';
+  this._address = options._address || '';
+  this._birthDate = new Date(options._birthDate);
+  this.friends = options._friends || [];
   events.EventEmitter.call(this);
 }
 util.inherits(Person, events.EventEmitter);

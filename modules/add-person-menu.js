@@ -17,21 +17,22 @@ var AddPersonMenu = function (personTypeParam) {
   stdin.addListener("data", readUserInput);
 
   function printLine (attribute) {
-    process.stdout.write('Write ' + personType + ' '+ attribute +' or "exit" to return \n');
+    console.log('Write ' + personType + ' '+ attribute +' or "exit" to return');
   }
   function display() {
 
-    if (!person.name) {
+    if (!person._name) {
       printLine('name');
-    } else if (!person.address) {
+    } else if (!person._address) {
       printLine('address');
-    } else if (!person.birthDate) {
+    } else if (!person._birthDate) {
       printLine('birth date');
     }
   }
 
   function readUserInput(userInput) {
 
+    console.log('entro aca');
     var finish = false;
     var userInput = userInput.toString().substring(0, userInput.length - 1);
 
@@ -41,13 +42,13 @@ var AddPersonMenu = function (personTypeParam) {
       stdin.removeListener("data", readUserInput);
     } else {
 
-      if (!person.name) {
-        person.name = userInput;
-      } else if (!person.address) {
-        person.address = userInput;
-      } else if (!person.birthDate) {
+      if (!person._name) {
+        person._name = userInput;
+      } else if (!person._address) {
+        person._address = userInput;
+      } else if (!person._birthDate) {
 
-        person.birthDate = userInput;
+        person._birthDate = userInput;
         self.emit('finish', _.clone(person));
         person = {};
         stdin.removeListener("data", readUserInput);

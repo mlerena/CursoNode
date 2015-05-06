@@ -18,7 +18,7 @@ var PersonCourseMenu = function (personCollection, coursesCollection, personType
 
   function print (attribute) {
 
-    process.stdout.write('Select ' + attribute + ' from the list, or "exit" to return \n');
+    console.log('Select ' + attribute + ' from the list, or "exit" to return');
   }
   function display() {
 

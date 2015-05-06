@@ -3,8 +3,8 @@
 var Course = function(opt) {
 
   opt || {};
-  this._name = opt.name || '';
-  this._minAvgGrade = opt.minAvgGrade || 0;
+  this._name = opt._name || '';
+  this._minAvgGrade = opt._minAvgGrade || 0;
   this._students = [];
   this._teacher = opt.teacher || null;
 }
@@ -23,5 +23,10 @@ Course.prototype.addStudent = function (student) {
 Course.prototype.getName = function () {
   return this._name;
 }
+
+Course.prototype.getStudentsCount = function () {
+  return this._students.length;
+}
+
 Course.prototype.removeStudent = function(student) {}
 module.exports = Course;

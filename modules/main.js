@@ -5,16 +5,18 @@ var Teacher = require('./teacher');
 var Course = require('./course');
 var Collection = require('./collection');
 var AddPersonMenu = require('./add-person-menu');
-var PersonCourseMenu = require ('./person-course-menu')
+var PersonCourseMenu = require ('./person-course-menu');
+var CourseCollection = require('./course-collection');
+
 
 var Main = function() {
 
   var stdin = process.openStdin();
-  var students = new Collection();
-  var teachers = new Collection();
-  var courses = new Collection();
-  courses.addItem(new Course({name: 'Math', minAvgGrade: 10}));
-  courses.addItem(new Course({name: 'Art', minAvgGrade: 5}));
+  var students = new Collection({'fileName':'students', 'itemConstructor': Student});
+  var teachers = new Collection({'fileName':'teachers', 'itemConstructor': Teacher});
+  var courses = new CourseCollection({'fileName':'courses', 'itemConstructor': Course});
+  courses.addItem(new Course({_name: 'Math', _minAvgGrade: 10}));
+  courses.addItem(new Course({_name: 'Art', _minAvgGrade: 5}));
 
   function processNewPerson (newPerson) {
 
@@ -41,7 +43,7 @@ var Main = function() {
   }
 
   function testTeacherGradeStudent() {
-
+/*
     var teach = new Teacher({'name':'adfs', 'address':'asdf'});
     var stud = new Student({'name':'stud', 'address':'asdf'});
     var cour = new Course({name: 'Art', minAvgGrade: 0});
@@ -59,9 +61,16 @@ var Main = function() {
     cour3.setTeacher(teach);
     stud.enrollToCourse(cour3);
     teach.gradeStudent(stud, cour3, 4);
-    process.stdout.write('*********************************** \n');
 
+    console.log('***********************************');
+    var courseCollection = new CourseCollection();
+    courseCollection.addItem(cour);
+    courseCollection.addItem(cour2);
+    courseCollection.addItem(cour3);
+    courseCollection.fullPrint();
+    */
   }
+
   function processUserInput (userInput) {
 
     var userOption = parseInt(userInput.toString().substring(0, userInput.length - 1));
@@ -86,24 +95,33 @@ var Main = function() {
       }
       menu.on('finish', assignPersonToCourse);
       stdin.removeListener("data", processUserInput);
-    } else if(userOption === 5){
+    }else if(userOption === 5){
+
+      courses.fullPrint();
+      mainMenu();
+    } else if(userOption === 6){
 
       testTeacherGradeStudent();
       mainMenu();
-    } else if (userOption === 6) {
+    } else if (userOption === 7) {
+
+      students.save();
+      teachers.save();
+      courses.save();
       process.exit();
     }
   }
 
   function mainMenu() {
-    process.stdout.write('*********************************** \n');
-    process.stdout.write('1. Create Studet \n');
-    process.stdout.write('2. Create Teacher \n');
-    process.stdout.write('3. Enroll student to a course \n');
-    process.stdout.write('4. Get teacher to teach a course \n');
-    process.stdout.write('5. Test teacher grade a student \n');
-    process.stdout.write('6. exit\n');
-    process.stdout.write('*********************************** \n');
+    console.log('***********************************');
+    console.log('1. Create Studet');
+    console.log('2. Create Teacher');
+    console.log('3. Enroll student to a course');
+    console.log('4. Get teacher to teach a course');
+    console.log('5. List all courses');
+    console.log('6. Test teacher grade a student');
+    console.log('7. exit');
+    console.log('***********************************');
 
     stdin.addListener("data", processUserInput);
   }

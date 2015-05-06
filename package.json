@@ -4,11 +4,14 @@
   "description": "NodeJsMay2015 Excercise 1",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "istanbul cover _mocha test --recursive -- -u exports -R spec && open coverage/index.html"
   },
   "author": "Manuel Lerena",
   "license": "ISC",
   "dependencies": {
+    "mocha": "^2.2.4",
+    "should": "^6.0.1",
+    "sinon": "^1.14.1",
     "underscore": "^1.8.3"
   }
 }
