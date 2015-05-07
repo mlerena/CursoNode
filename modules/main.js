@@ -8,6 +8,7 @@ var AddPersonMenu = require('./add-person-menu');
 var PersonCourseMenu = require ('./person-course-menu');
 var CourseCollection = require('./course-collection');
 var logger = require('./logger');
+var when = require('when');
 
 var Main = function() {
 
@@ -17,23 +18,35 @@ var Main = function() {
   var teachers = new Collection({'fileName':'teachers', 'itemConstructor': Teacher});
   var courses = new CourseCollection({'fileName':'courses', 'itemConstructor': Course});
 
-  if (courses.count() === 0) {
 
-    courses.addItem(new Course({_name: 'Math', _minAvgGrade: 10}));
-    courses.addItem(new Course({_name: 'Art', _minAvgGrade: 5}));
-    courses.addItem(new Course({_name: 'Fut', _minAvgGrade: 7}));
-    courses.addItem(new Course({_name: 'Bask', _minAvgGrade: 8}));
-    courses.addItem(new Course({_name: 'Bol', _minAvgGrade: 3}));
+  function init() {
+    var promises = [];
+    promises.push(students.setUp());
+    promises.push(teachers.setUp());
+    promises.push(courses.setUp());
+
+    when.all(promises).then(function(){
+
+      if (courses.count() === 0) {
+
+        courses.addItem(new Course({_name: 'Math', _minAvgGrade: 10}));
+        courses.addItem(new Course({_name: 'Art', _minAvgGrade: 5}));
+        courses.addItem(new Course({_name: 'Fut', _minAvgGrade: 7}));
+        courses.addItem(new Course({_name: 'Bask', _minAvgGrade: 8}));
+        courses.addItem(new Course({_name: 'Bol', _minAvgGrade: 3}));
+      }
+
+     mainMenu();
+    });
   }
-
   function processNewPerson (newPerson) {
 
     if (newPerson) {
       if (newPerson.type === 'student') {
-        logger.info("Create new Student");
+        logger.info('Create new Student: ' +  newPerson._name);
         students.addItem(new Student(newPerson));
       } else if (newPerson.type === 'teacher') {
-        logger.info("Create new Teacher");
+        logger.info('Create new Teacher: ' + newPerson._name);
         teachers.addItem(new Teacher(newPerson));
       }
     }
@@ -44,10 +57,10 @@ var Main = function() {
     if (personCourse) {
 
       if (personCourse.personType.toLowerCase() === 'student') {
-        logger.info("Add student to course");
+        logger.info('Add student '+personCourse.person.getName()+ ' to course: '+ personCourse.course.getName());
         personCourse.course.addStudent(personCourse.person);
       } else {
-        logger.info("Set teacher to course");
+        logger.info('Set teacher: ' +personCourse.person.getName()+ ' to course:'+ personCourse.course.getName());
         personCourse.course.setTeacher(personCourse.person);
       }
     }
@@ -100,10 +113,13 @@ var Main = function() {
       mainMenu();
     } else if (userOption === 7) {
 
-      students.save();
-      teachers.save();
-      courses.save();
-      process.exit();
+      var promises = [];
+      promises.push(students.save());
+      promises.push(teachers.save());
+      promises.push(courses.save());
+      when.all(promises).then(function(){
+        process.exit();
+      });
     }
   }
 
@@ -124,7 +140,7 @@ var Main = function() {
 
   return function() {
     return {
-      run: mainMenu
+      run: init
     }
   }
 }

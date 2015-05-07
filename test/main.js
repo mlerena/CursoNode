@@ -1,4 +1,5 @@
 var assert = require("assert");
+var should = require("should");
 var sinon = require("sinon");
 var main = require("../modules/main.js");
 

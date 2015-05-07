@@ -1,6 +1,7 @@
 'use strict'
 var fs = require('fs');
 var logger = require('./logger');
+var when = require('when');
 
 var Collection = function(opt) {
 
@@ -15,43 +16,46 @@ var Collection = function(opt) {
   }
 
   this._collection = [];
+}
 
-
+Collection.prototype.setUp = function () {
 
   var self = this;
+  var deferred = when.defer();
   if (this._filename) {
-    getFromFile();
+
+      fs.readFile(this._filename, {encoding: 'utf-8'}, function (err, data) {
+
+        if (!err) {
+          JSON.parse(data).forEach(function (item) {
+            self._collection.push(new self._itemConstructor(item));
+          });
+
+          logger.info('Read data from file: ' + self._filename + ' Items loaded: ' + JSON.parse(data).length);
+        } else {
+          logger.warn('No file loaded: ' + self._filename);
+        }
+        deferred.resolve(true);
+      });
+   } else {
+    deferred.resolve(true);
   }
-
-  function getFromFile() {
-
-    if (fs.existsSync(self._filename) ) {
-      try {
-        var data = fs.readFileSync(self._filename, 'utf8');
-        JSON.parse(data).forEach(function (item) {
-          self._collection.push(new self._itemConstructor(item));
-        });
-        logger.info('Read data from file: ' + self._filename + ' Items loaded: ' + JSON.parse(data).length);
-      } catch (e) {
-
-        logger.error(e.toString());
-      }
-    } else {
-      logger.info('No file loaded: ' + self._filename);
-    }
-  }
+  return deferred.promise;
 }
+
 Collection.prototype.save = function() {
 
-
-    try {
-      fs.writeFileSync(this._filename, JSON.stringify(this._collection));
-      logger.info('Save data to file: ' + '/tmp/' + this._filename + ' Items saved: ' + this._collection.length);
-    } catch (e) {
-
+  var deferred = when.defer();
+  var self = this;
+  fs.writeFile(this._filename, JSON.stringify(this._collection), function(error, data) {
+    if (!error) {
+      logger.info('Save data to file: ' + '/tmp/' + self._filename + ' Items saved: ' + self._collection.length);
+    } else {
       logger.error(e.toString());
     }
-
+    deferred.resolve(true);
+  });
+  return deferred.promise;
 }
 
 Collection.prototype.addItem = function(item) {
@@ -66,7 +70,7 @@ Collection.prototype.getItemById = function (id) {
 Collection.prototype.print = function () {
 
   this._collection.forEach(function (item, index) {
-    console.log(item._id);
+
     var id =  parseInt(index) + 1;
     console.log('(' + id + '). ' + item.getName());
   });
