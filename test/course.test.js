@@ -90,13 +90,15 @@ describe('Course', function(){
     course.getTeacher().should.be.exactly(teacher);
   });
 
-  it('Should return name', function(){
+  it('Should return name, id and minAcgGrade ', function(){
 
     var teacher = {};
 
-    var course = new Course({_name:'theName'});
+    var course = new Course({_name:'theName', _id:10, _minAvgGrade:15});
     course.setTeacher(teacher);
     course.getName().should.be.exactly('theName');
+    course.getId().should.be.exactly(10);
+    course.getMinAvgGrade().should.be.exactly(15);
   });
 
 

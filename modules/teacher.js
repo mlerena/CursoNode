@@ -13,8 +13,6 @@ Teacher.prototype.teachCourse = function(course) {
    course.setTeacher(this);
 }
 
-Teacher.prototype.stopTeachingCourse = function(course) {}
-
 Teacher.prototype.gradeStudent = function(student, course, grade) {
   student.setCourseGrade(course, grade);
   logger.info('Teacher grade:' + student.getName() + '. Grade:' + grade);

@@ -38,5 +38,7 @@ Course.prototype.getStudentsCount = function () {
   return this._students.length;
 }
 
-Course.prototype.removeStudent = function(student) {}
+Course.prototype.getMinAvgGrade = function() {
+  return this._minAvgGrade;
+}
 module.exports = Course;

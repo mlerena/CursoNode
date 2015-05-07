@@ -50,9 +50,9 @@ Collection.prototype.save = function() {
   var self = this;
   fs.writeFile(this._filename, JSON.stringify(this._collection), function(error, data) {
     if (!error) {
-      logger.info('Save data to file: ' + os.tmpdir() + self._filename + ' Items saved: ' + self._collection.length);
+      logger.info('Save data to file: ' + self._filename + ' Items saved: ' + self._collection.length);
     } else {
-      logger.error(e.toString());
+      logger.error(error.toString());
     }
     deferred.resolve(true);
   });

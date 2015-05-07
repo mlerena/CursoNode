@@ -44,6 +44,7 @@ describe('Person', function(){
     var person = new Person(opt);
     person.getName().should.be.exactly('name');
     person.getId().should.be.exactly(1);
+    person.getAge().should.be.a.number;
    });
 
   it('Should set the id', function(){
