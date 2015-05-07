@@ -33,7 +33,6 @@ var PersonCourseMenu = function (personCollection, coursesCollection, personType
 
   function readUserInput(userInput) {
 
-    console.log('entro menu user');
     var finish = false;
     var userInput = userInput.toString().substring(0, userInput.length - 1);
 

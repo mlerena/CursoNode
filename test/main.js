@@ -31,5 +31,4 @@ describe('Main', function(){
     assert(spy.calledWith('6. exit'));
     assert(spy.calledWith('***********************************'));
   });
-
 });

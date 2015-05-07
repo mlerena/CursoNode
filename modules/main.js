@@ -59,8 +59,10 @@ var Main = function() {
    var teacher = teachers.getItemById(1);
    var student = students.getItemById(2);
    var course = courses.getItemById(1);
-    course.setTeacher(teacher);
-    teacher.gradeStudent(student, course, 20);
+    if (teacher && student && course) {
+      course.setTeacher(teacher);
+      teacher.gradeStudent(student, course, 20);
+    }
   }
 
   function processUserInput (userInput) {

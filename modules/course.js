@@ -15,6 +15,9 @@ var Course = function(opt) {
 Course.prototype.setId = function(id) {
   this._id = id;
 }
+Course.prototype.getId = function(id) {
+  return this._id;
+}
 Course.prototype.setTeacher = function(teacher) {
   this._teacher = teacher;
 }

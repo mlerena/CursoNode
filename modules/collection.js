@@ -66,8 +66,9 @@ Collection.prototype.getItemById = function (id) {
 Collection.prototype.print = function () {
 
   this._collection.forEach(function (item, index) {
+    console.log(item._id);
     var id =  parseInt(index) + 1;
-    console.log('(' + id + '). ' + item.getName() + '\n');
+    console.log('(' + id + '). ' + item.getName());
   });
 }
 
