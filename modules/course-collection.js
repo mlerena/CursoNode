@@ -11,10 +11,8 @@ util.inherits(CourseCollection, Collection);
 CourseCollection.prototype.fullPrint = function() {
 
   this._collection.forEach(function (item, index) {
-    var id =  parseInt(index) + 1;
-    var teacherName = item.getTeacher()? item.getTeacher().getName() : 'N/A';
-    process.stdout.write('(' + id + '). ' + item.getName() + '--' + teacherName+' '+ item.getStudentsCount()+ '\n');
+    var teacherName = item.getTeacher() ? item.getTeacher().getName() : 'N/A';
+    console.log( item.getName() + ' - ' + teacherName + ' - '+ item.getStudentsCount());
   });
 }
-
 module.exports = CourseCollection;

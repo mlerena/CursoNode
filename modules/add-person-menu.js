@@ -32,7 +32,6 @@ var AddPersonMenu = function (personTypeParam) {
 
   function readUserInput(userInput) {
 
-    console.log('entro aca');
     var finish = false;
     var userInput = userInput.toString().substring(0, userInput.length - 1);
 
@@ -49,7 +48,7 @@ var AddPersonMenu = function (personTypeParam) {
       } else if (!person._birthDate) {
 
         person._birthDate = userInput;
-        self.emit('finish', _.clone(person));
+        self.emit('finish', person);
         person = {};
         stdin.removeListener("data", readUserInput);
         finish = true;
@@ -61,4 +60,4 @@ var AddPersonMenu = function (personTypeParam) {
   }
 }
 utils.inherits(AddPersonMenu, events.EventEmitter);
-module.exports = AddPersonMenu
+module.exports = AddPersonMenu;

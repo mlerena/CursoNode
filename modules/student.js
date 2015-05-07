@@ -3,6 +3,7 @@
 var Person = require('./person');
 var util = require('util');
 var _ = require('underscore');
+var logger = require('./logger');
 
 var Student = function(options) {
 
@@ -25,8 +26,8 @@ Student.prototype.enrollToCourse = function(course) {
 
         return memo + currentGrade;
       }, 0) / (actualGrades.length === 0 ? 1 : actualGrades.length);
-      console.log('Student recieve new grade for course: ' + course.getName() + '. Grade: ' + grade);
-      console.log('Student new avg: ' +self._avgGrade);
+      logger.info('Student recieve new grade for course: ' + course.getName() + '. Grade: ' + grade + '. From the teacher: ' + course.getTeacher().getName());
+      logger.info('Student new avg: ' + self._avgGrade);
     }
   }
 
@@ -34,7 +35,7 @@ Student.prototype.enrollToCourse = function(course) {
 
     course.addStudent(this);
     if (course.getTeacher() !== null) {
-      course.getTeacher().on('teacher:grade-student', processGradeEvent);
+      course.getTeacher().on('teacher:grade-student:' + self.getId(), processGradeEvent);
     }
   }
 }

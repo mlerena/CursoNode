@@ -33,6 +33,7 @@ var PersonCourseMenu = function (personCollection, coursesCollection, personType
 
   function readUserInput(userInput) {
 
+    console.log('entro menu user');
     var finish = false;
     var userInput = userInput.toString().substring(0, userInput.length - 1);
 
@@ -44,6 +45,7 @@ var PersonCourseMenu = function (personCollection, coursesCollection, personType
 
       if (!personCourse.person) {
         personCourse.person = personCollection.getItemById(userInput);
+        //personCourse.person.type = personType;
       } else if (!personCourse.course) {
         personCourse.course = coursesCollection.getItemById(userInput);
         if (personCourse.course) {

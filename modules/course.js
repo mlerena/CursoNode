@@ -1,12 +1,19 @@
 'use strict'
-
+var Teacher = require('./teacher');
 var Course = function(opt) {
 
-  opt || {};
+  this._id = opt._id;
   this._name = opt._name || '';
   this._minAvgGrade = opt._minAvgGrade || 0;
-  this._students = [];
-  this._teacher = opt.teacher || null;
+  this._students = opt._students || [];
+  this._teacher = null;
+  if (opt._teacher) {
+    this._teacher = new Teacher(opt._teacher);
+  }
+
+}
+Course.prototype.setId = function(id) {
+  this._id = id;
 }
 Course.prototype.setTeacher = function(teacher) {
   this._teacher = teacher;
