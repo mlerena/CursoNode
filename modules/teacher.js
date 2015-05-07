@@ -10,16 +10,10 @@ function Teacher(options) {
 util.inherits(Teacher, Person);
 
 Teacher.prototype.teachCourse = function(course) {
-  if (course instanceof Course) {
-    course.setTeacher(course);
-  }
+   course.setTeacher(this);
 }
 
-Teacher.prototype.stopTeachingCourse = function(course) {
-  if (course instanceof Course) {
-    course.setTeacher(null);
-  }
-}
+Teacher.prototype.stopTeachingCourse = function(course) {}
 
 Teacher.prototype.gradeStudent = function(student, course, grade) {
   student.setCourseGrade(course, grade);

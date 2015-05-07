@@ -17,6 +17,7 @@ util.inherits(Student, Person);
 Student.prototype.enrollToCourse = function(course) {
 
   var self = this;
+
   function processGradeEvent(student, course, grade) {
 
     var actualGrades = _.values(self._currentGrades);
@@ -37,6 +38,8 @@ Student.prototype.enrollToCourse = function(course) {
     if (course.getTeacher() !== null) {
       course.getTeacher().on('teacher:grade-student:' + self.getId(), processGradeEvent);
     }
+  } else {
+    logger.warn('Unsatisfied minimum average grade. Student: ' + this.getName() + ' course: ' + course.getName());
   }
 }
 

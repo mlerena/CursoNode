@@ -2,6 +2,7 @@
 var fs = require('fs');
 var logger = require('./logger');
 var when = require('when');
+var os = require('os');
 
 var Collection = function(opt) {
 
@@ -9,7 +10,7 @@ var Collection = function(opt) {
     var opt = {};
   }
   if (opt.fileName) {
-    this._filename = '/tmp/' + opt.fileName;
+    this._filename = os.tmpdir() + opt.fileName;
   }
   if (opt.itemConstructor) {
     this._itemConstructor = opt.itemConstructor;
@@ -49,7 +50,7 @@ Collection.prototype.save = function() {
   var self = this;
   fs.writeFile(this._filename, JSON.stringify(this._collection), function(error, data) {
     if (!error) {
-      logger.info('Save data to file: ' + '/tmp/' + self._filename + ' Items saved: ' + self._collection.length);
+      logger.info('Save data to file: ' + os.tmpdir() + self._filename + ' Items saved: ' + self._collection.length);
     } else {
       logger.error(e.toString());
     }

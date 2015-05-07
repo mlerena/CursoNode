@@ -8,7 +8,10 @@ var Person = function(options) {
   this._id = options._id || 0;
   this._name = options._name || '';
   this._address = options._address || '';
-  this._birthDate = new Date(options._birthDate);
+  this._birthDate = null;
+  if (options._birthDate) {
+    this._birthDate = new Date(options._birthDate);
+  }
   this._friends = options._friends || [];
   events.EventEmitter.call(this);
 }

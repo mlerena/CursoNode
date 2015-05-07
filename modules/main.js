@@ -35,9 +35,8 @@ var Main = function() {
         courses.addItem(new Course({_name: 'Bask', _minAvgGrade: 8}));
         courses.addItem(new Course({_name: 'Bol', _minAvgGrade: 3}));
       }
-
-     mainMenu();
     });
+    mainMenu();
   }
   function processNewPerson (newPerson) {
 

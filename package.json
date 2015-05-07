@@ -4,7 +4,7 @@
   "description": "NodeJsMay2015 Excercise 1",
   "main": "app.js",
   "scripts": {
-    "test": "istanbul cover _mocha test --recursive -- -u exports -R spec && open coverage/index.html"
+    "test": "istanbul cover _mocha test --recursive -- -u exports -R spec"
   },
   "author": "Manuel Lerena",
   "license": "ISC",

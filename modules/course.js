@@ -2,7 +2,7 @@
 var Teacher = require('./teacher');
 var Course = function(opt) {
 
-  this._id = opt._id;
+  this._id = opt._id || null;
   this._name = opt._name || '';
   this._minAvgGrade = opt._minAvgGrade || 0;
   this._students = opt._students || [];
