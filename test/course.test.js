@@ -5,7 +5,7 @@ var sinon = require("sinon");
 
 describe('Course', function(){
 
-  var Course = require("../modules/course.js");
+  var Course = require("../app/models/course.js");
   it('Should initiate as expected with no options', function(){
 
     var opt ={}
@@ -33,7 +33,7 @@ describe('Course', function(){
   });
 
   it('Should initiate as expected with teacher', function(){
-    var Teacher = require("../modules/teacher.js")
+    var Teacher = require("../app/models/teacher.js")
     var opt ={
       '_name': 'courseName',
       '_id' : 2,

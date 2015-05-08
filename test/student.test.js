@@ -5,10 +5,10 @@ var sinon = require("sinon");
 
 describe('Student', function(){
 
-  var Student = require("../modules/student.js");
-  var Person = require('../modules/person.js');
-  var Course  = require('../modules/course');
-  var Teacher = require('../modules/teacher');
+  var Student = require("../app/models/student.js");
+  var Person = require('../app/models/person.js');
+  var Course  = require('../app/models/course');
+  var Teacher = require('../app/models/teacher');
 
   it('Should be an instance of Person', function(){
 

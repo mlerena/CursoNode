@@ -1,7 +1,7 @@
 var assert = require("assert");
 var should = require("should");
 var sinon = require("sinon");
-var main = require("../modules/main.js");
+var main = require("../app/controllers/main.js");
 
 describe('Main', function(){
 

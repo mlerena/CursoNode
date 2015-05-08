@@ -5,9 +5,9 @@ var sinon = require("sinon");
 
 describe('Teacher', function(){
 
-  var Teacher = require("../modules/teacher.js");
+  var Teacher = require("../app/models/teacher.js");
   it('Should be an instance of Person', function(){
-    var Person = require('../modules/person.js');
+    var Person = require('../app/models/person.js');
     var opt ={}
     var teacher = new Teacher(opt);
 
@@ -16,7 +16,7 @@ describe('Teacher', function(){
 
   it('Should teach a course', function(){
 
-    var Course = require('../modules/course.js');
+    var Course = require('../app/models/course.js');
     var course = new Course({});
     var spy = sinon.spy(course, "setTeacher");
     var opt ={}
@@ -28,8 +28,8 @@ describe('Teacher', function(){
 
   it('Should call Student when grade a student.', function(){
 
-    var Course = require('../modules/course.js');
-    var Student = require('../modules/student.js');
+    var Course = require('../app/models/course.js');
+    var Student = require('../app/models/student.js');
 
     var course = new Course({});
     var student = new Student({_id:2});
@@ -46,8 +46,8 @@ describe('Teacher', function(){
 
   it('Should emit event with the student id when grade a student.', function(){
 
-    var Course = require('../modules/course.js');
-    var Student = require('../modules/student.js');
+    var Course = require('../app/models/course.js');
+    var Student = require('../app/models/student.js');
 
     var course = new Course({});
     var student = new Student({_id:2});
@@ -62,9 +62,9 @@ describe('Teacher', function(){
 
   it('Should log information when grade a student.', function(){
 
-    var Course = require('../modules/course.js');
-    var Student = require('../modules/student.js');
-    var Logger = require('../modules/logger.js');
+    var Course = require('../app/models/course.js');
+    var Student = require('../app/models/student.js');
+    var Logger = require('../app/logger.js');
 
     var course = new Course({});
     var student = new Student({_id:2});

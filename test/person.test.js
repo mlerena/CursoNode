@@ -5,7 +5,7 @@ var sinon = require("sinon");
 
 describe('Person', function(){
 
-  var Person = require("../modules/person.js");
+  var Person = require("../app/models/person.js");
   it('Should initiate as expected with no options', function(){
     var events = require('events');
     var opt ={}

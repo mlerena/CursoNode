@@ -2,7 +2,7 @@
 
 var Person = require('./person');
 var util = require('util');
-var logger = require('./logger');
+var logger = require('./../logger');
 function Teacher(options) {
 
   Person.call(this, options);

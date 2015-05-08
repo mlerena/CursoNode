@@ -1,13 +1,13 @@
 'use strict'
 
-var Student = require('./student');
-var Teacher = require('./teacher');
-var Course = require('./course');
-var Collection = require('./collection');
+var Student = require('./../models/student');
+var Teacher = require('./../models/teacher');
+var Course = require('./../models/course');
+var Collection = require('./../models/collection');
 var AddPersonMenu = require('./add-person-menu');
 var PersonCourseMenu = require ('./person-course-menu');
-var CourseCollection = require('./course-collection');
-var logger = require('./logger');
+var CourseCollection = require('./../models/course-collection');
+var logger = require('./../logger');
 var when = require('when');
 
 var Main = function() {
@@ -35,6 +35,8 @@ var Main = function() {
         courses.addItem(new Course({_name: 'Bask', _minAvgGrade: 8}));
         courses.addItem(new Course({_name: 'Bol', _minAvgGrade: 3}));
       }
+    }, function(error) {
+      logger.warn("Error loading data : " + error.toString());
     });
     mainMenu();
   }

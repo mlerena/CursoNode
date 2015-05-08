@@ -1,8 +1,8 @@
 'use strict'
 var fs = require('fs');
-var logger = require('./logger');
+var logger = require('../logger');
 var when = require('when');
-var os = require('os');
+var config = require('../../config');
 
 var Collection = function(opt) {
 
@@ -10,7 +10,7 @@ var Collection = function(opt) {
     var opt = {};
   }
   if (opt.fileName) {
-    this._filename = os.tmpdir() + opt.fileName;
+    this._filename = config.dataDirectory + opt.fileName;
   }
   if (opt.itemConstructor) {
     this._itemConstructor = opt.itemConstructor;
@@ -25,19 +25,26 @@ Collection.prototype.setUp = function () {
   var deferred = when.defer();
   if (this._filename) {
 
-      fs.readFile(this._filename, {encoding: 'utf-8'}, function (err, data) {
-
-        if (!err) {
-          JSON.parse(data).forEach(function (item) {
-            self._collection.push(new self._itemConstructor(item));
-          });
-
-          logger.info('Read data from file: ' + self._filename + ' Items loaded: ' + JSON.parse(data).length);
-        } else {
-          logger.warn('No file loaded: ' + self._filename);
-        }
+    fs.exists(this._filename, function(exist) {
+      if (!exist) {
         deferred.resolve(true);
-      });
+      } else {
+        fs.readFile(self._filename, {encoding: 'utf-8'}, function (err, data) {
+
+          if (!err) {
+            JSON.parse(data).forEach(function (item) {
+              self._collection.push(new self._itemConstructor(item));
+            });
+
+            logger.info('Read data from file: ' + self._filename + ' Items loaded: ' + JSON.parse(data).length);
+            deferred.resolve(true);
+          } else {
+            deferred.reject(err);
+            logger.warn('No file loaded: ' + self._filename);
+          }
+        });
+      }
+    });
    } else {
     deferred.resolve(true);
   }
@@ -48,6 +55,7 @@ Collection.prototype.save = function() {
 
   var deferred = when.defer();
   var self = this;
+
   fs.writeFile(this._filename, JSON.stringify(this._collection), function(error, data) {
     if (!error) {
       logger.info('Save data to file: ' + self._filename + ' Items saved: ' + self._collection.length);

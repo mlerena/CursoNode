@@ -3,7 +3,7 @@
 var Person = require('./person');
 var util = require('util');
 var _ = require('underscore');
-var logger = require('./logger');
+var logger = require('./../logger');
 
 var Student = function(options) {
 
