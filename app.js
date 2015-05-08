@@ -10,7 +10,7 @@ fs.exists(config.dataDirectory, function(exist){
     fs.access(config.dataDirectory, fs.W_OK,  function(err){
 
       if (!err) {
-        var app = require('./app/controllers/main');
+        var app = require('./app/controllers/console-main');
         app().run();
       } else {
         logger.error('Cant write on: ' + config.dataDirectory);

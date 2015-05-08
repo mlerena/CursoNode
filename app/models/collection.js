@@ -37,7 +37,7 @@ Collection.prototype.setUp = function () {
             });
 
             logger.info('Read data from file: ' + self._filename + ' Items loaded: ' + JSON.parse(data).length);
-            deferred.resolve(true);
+            deferred.resolve(false);
           } else {
             deferred.reject(err);
             logger.warn('No file loaded: ' + self._filename);
@@ -83,6 +83,10 @@ Collection.prototype.print = function () {
     var id =  parseInt(index) + 1;
     console.log('(' + id + '). ' + item.getName());
   });
+}
+
+Collection.prototype.getItems = function() {
+  return this._collection;
 }
 
 Collection.prototype.count = function() {
