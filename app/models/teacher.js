@@ -25,10 +25,6 @@ Teacher.prototype.gradeStudent = function(student, course, grade) {
 Teacher.prototype.getHalResource = function() {
   var link = '/' + config.resources.teachers +'?id=' + this.getId();
   var halResource = new hal.Resource({data:this}, link);
-  halResource.link('delete', link)
-      .link('read',link)
-      .link('update',link);
   return halResource;
-
 }
 module.exports = Teacher;

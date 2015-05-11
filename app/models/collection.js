@@ -137,7 +137,6 @@ Collection.prototype.getHalResource = function() {
 
   var resourceName = this.resourceName;
   var halResource = new hal.Resource({name: resourceName}, '/' +  resourceName);
-  halResource.link('create', '/' +  resourceName);
 
   this._collection.forEach(function(item) {
     halResource.embed(resourceName, item.getHalResource());

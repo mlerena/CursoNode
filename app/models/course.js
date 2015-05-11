@@ -47,9 +47,7 @@ Course.prototype.getHalResource = function(){
 
   var halResource = new hal.Resource({'data':{_name:this._name, _id:this._id, _minAvgGrade:this._minAvgGrade}},
                                       '/' + config.resources.courses + '?id=' +  this.getId());
-  halResource.link('delete', '/' +config.resources.courses+ '?id=' +  this.getId())
-      .link('read', '/' +config.resources.courses+ '?id=' +  this.getId())
-      .link('update', '/' +config.resources.courses+ '?id=' +  this.getId());
+
   if(this._teacher) {
     halResource.embed('teacher', new hal.Resource(this._teacher, '/' + config.resources.teachers + '?id=' + this._teacher.getId()));
   }

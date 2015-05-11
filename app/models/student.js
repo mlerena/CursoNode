@@ -51,10 +51,7 @@ Student.prototype.setCourseGrade = function(course, grade) {
 Student.prototype.getHalResource = function() {
   var link = '/' + config.resources.students +'?id=' + this.getId();
   var halResource = new hal.Resource({data:this}, link);
-  halResource.link('delete', link)
-      .link('read',link)
-      .link('update',link);
-  return halResource;
+   return halResource;
 
 }
 module.exports = Student;

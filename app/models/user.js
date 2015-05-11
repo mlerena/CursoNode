@@ -18,9 +18,7 @@ util.inherits(User, Person);
 User.prototype.getHalResource = function() {
   var link = '/' + config.resources.users +'?id=' + this.getId();
   var halResource = new hal.Resource({data:this}, link);
-  halResource.link('delete', link)
-      .link('read',link)
-      .link('update',link);
+  halResource.link('delete', link);
   return halResource;
 }
 module.exports = User;
