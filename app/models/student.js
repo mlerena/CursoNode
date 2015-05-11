@@ -4,6 +4,8 @@ var Person = require('./person');
 var util = require('util');
 var _ = require('underscore');
 var logger = require('./../logger');
+var hal = require('nor-hal/src/hal.js');
+var config = require('../../config');
 
 var Student = function(options) {
 
@@ -44,5 +46,15 @@ Student.prototype.enrollToCourse = function(course) {
 Student.prototype.setCourseGrade = function(course, grade) {
 
   this._currentGrades[course.getName()] = grade;
+}
+
+Student.prototype.getHalResource = function() {
+  var link = '/' + config.resources.students +'?id=' + this.getId();
+  var halResource = new hal.Resource({data:this}, link);
+  halResource.link('delete', link)
+      .link('read',link)
+      .link('update',link);
+  return halResource;
+
 }
 module.exports = Student;

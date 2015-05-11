@@ -1,5 +1,7 @@
 'use strict'
 var Teacher = require('./teacher');
+var hal = require('nor-hal/src/hal.js');
+var config = require('../../config');
 var Course = function(opt) {
 
   this._id = opt._id || null;
@@ -15,7 +17,7 @@ var Course = function(opt) {
 Course.prototype.setId = function(id) {
   this._id = id;
 }
-Course.prototype.getId = function(id) {
+Course.prototype.getId = function() {
   return this._id;
 }
 Course.prototype.setTeacher = function(teacher) {
@@ -40,5 +42,22 @@ Course.prototype.getStudentsCount = function () {
 
 Course.prototype.getMinAvgGrade = function() {
   return this._minAvgGrade;
+}
+Course.prototype.getHalResource = function(){
+
+  var halResource = new hal.Resource({'data':{_name:this._name, _id:this._id, _minAvgGrade:this._minAvgGrade}},
+                                      '/' + config.resources.courses + '?id=' +  this.getId());
+  halResource.link('delete', '/' +config.resources.courses+ '?id=' +  this.getId())
+      .link('read', '/' +config.resources.courses+ '?id=' +  this.getId())
+      .link('update', '/' +config.resources.courses+ '?id=' +  this.getId());
+  if(this._teacher) {
+    halResource.embed('teacher', new hal.Resource(this._teacher, '/' + config.resources.teachers + '?id=' + this._teacher.getId()));
+  }
+  if (this._students) {
+    this._students.forEach(function(student) {
+      halResource.embed('students', new hal.Resource(student, '/' + config.resources.students + '?id=' + student._id ));
+    });
+  }
+  return halResource;
 }
 module.exports = Course;

@@ -5,6 +5,7 @@ module.exports = {
   resources:{
     teachers:'teachers',
     students:'students',
-    courses: 'courses'
+    courses: 'courses',
+    users: 'users'
   }
 };
