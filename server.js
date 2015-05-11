@@ -18,7 +18,7 @@ var server = http.createServer(function (req, res) {
   if(collectionName === ''){
 
     var body = controller().getNoCollectionResponse();
-    res.writeHead(200, {"Content-Type": "application/json"});
+    res.writeHead(200, {"Content-Type": "application/hal+json"});
     res.end(JSON.stringify(body));
 
   }else  if (availableCollections.indexOf(collectionName) !== -1 ) {
@@ -27,46 +27,43 @@ var server = http.createServer(function (req, res) {
 
       if (queryString.id) {
         controller().getItemById(collectionName, queryString.id).then(function (item) {
-          console.log(item.getHalResource());
-          res.writeHead(200, {"Content-Type": "application/json"});
+          res.writeHead(200, {"Content-Type": "application/hal+json"});
           res.end(item.getHalResource().toString());
         }, function (err) {
-          res.writeHead(500, {"Content-Type": "application/json"});
+          res.writeHead(500, {"Content-Type": "application/hal+json"});
           res.end();
         });
       } else {
         controller().getCollection(collectionName).then(function (collection) {
-          res.writeHead(200, {"Content-Type": "application/json"});
+          res.writeHead(200, {"Content-Type": "application/hal+json"});
           res.end(collection.getHalResource().toString());
         }, function (err) {
-          res.writeHead(500, {"Content-Type": "application/json"});
+          res.writeHead(500, {"Content-Type": "application/hal+json"});
           res.end();
         });
       }
     } else if (req.method === 'DELETE') {
 
       controller().deleteItemById(collectionName, queryString.id).then(function(){
-        res.writeHead(200, {"Content-Type": "application/json"});
+        res.writeHead(200, {"Content-Type": "application/hal+json"});
         res.end('item deleted');
       }, function(err){
-        res.writeHead(500, {"Content-Type": "application/json"});
-        console.log(err);
-        res.end(err);
+        res.writeHead(500, {"Content-Type": "application/hal+json"});
+         res.end(err);
       })
-    } else if (req.method === 'POST') {
-
+    } else if (req.method === 'POST') {1
 
       controller().addItem(collectionName, queryString).then(function(){
-        res.writeHead(200, {"Content-Type": "application/json"});
+        res.writeHead(200, {"Content-Type": "application/hal+json"});
         res.end('item added');
       }, function(err){
-        res.writeHead(500, {"Content-Type": "application/json"});
+        res.writeHead(500, {"Content-Type": "application/hal+json"});
         res.end(err);
       })
 
     }
   } else {
-    res.writeHead(404, {"Content-Type": "application/json"});
+    res.writeHead(404, {"Content-Type": "application/hal+json"});
     res.end();
   }
 });

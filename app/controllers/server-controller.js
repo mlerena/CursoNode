@@ -30,47 +30,6 @@ var serverController = function(){
     return collection;
   }
 
-  function getHalResource(collection, collectionName) {
-
-    var halObject = {};
-    if (collection) {
-
-      halObject = new hal.Resource({'items':collection.getItems()}, '/' + collectionName);
-    } else {
-      halObject = new hal.Resource({}, '/');
-    }
-    return halObject;
-  }
-
-  function teacherLinks(halObject) {
-    halObject.link(config.resources.students, '/' + config.resources.students);
-    halObject.link(config.resources.courses, '/' + config.resources.courses);
-  }
-
-  function studentLinks(halObject) {
-    halObject.link(config.resources.teachers, '/' + config.resources.teachers);
-    halObject.link(config.resources.courses, '/' + config.resources.courses);
-  }
-
-  function addLinks(halObject, collectionName) {
-
-    if (collectionName === config.resources.teachers) {
-      teacherLinks(halObject);
-    } else if (collectionName === config.resources.students) {
-      studentLinks(halObject);
-    } else if (collectionName === config.resources.courses) {
-
-      halObject.link(config.resources.students, '/' + config.resources.students);
-      halObject.link(config.resources.teachers, '/' + config.resources.teachers);
-    } else {
-
-      halObject.link(config.resources.students, '/' + config.resources.students);
-      halObject.link(config.resources.teachers, '/' + config.resources.teachers);
-      halObject.link(config.resources.courses, '/' + config.resources.courses);
-    }
-    return halObject;
-  }
-
   return {
 
     getCollection: function(collectionName) {
@@ -129,7 +88,7 @@ var serverController = function(){
     },
     getNoCollectionResponse: function () {
 
-      var halResource = getHalResource();
+      var halResource = new hal.Resource({}, '/');
       halResource.link(config.resources.students, '/' + config.resources.students);
       halResource.link(config.resources.teachers, '/' + config.resources.teachers);
       halResource.link(config.resources.courses, '/' + config.resources.courses);
