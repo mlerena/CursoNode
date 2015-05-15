@@ -7,5 +7,6 @@ module.exports = {
     students:'students',
     courses: 'courses',
     users: 'users'
-  }
+  },
+  mongoDb: "mongodb://localhost/cursoNode"
 };

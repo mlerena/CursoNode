@@ -1,30 +1,23 @@
-'use strict'
+'use strict';
 
-var Person = require('./person');
-var util = require('util');
-var logger = require('./../logger');
-var hal = require('nor-hal/src/hal.js');
-var config = require('../../config');
+/**
+ * Module dependencies.
+ */
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-function Teacher(options) {
+var Teacher = new Schema({
+  name: {
+    type: String,
+    default: '',
+    required: 'Teacher name required',
+    trim: true
+  },
+  birthDate: {
+    type: String,
+    default: '',
+    trim: true
+  }
+});
 
-  Person.call(this, options);
-}
-util.inherits(Teacher, Person);
-
-Teacher.prototype.teachCourse = function(course) {
-   course.setTeacher(this);
-}
-
-Teacher.prototype.gradeStudent = function(student, course, grade) {
-  student.setCourseGrade(course, grade);
-  logger.info('Teacher grade:' + student.getName() + '. Grade:' + grade);
-  this.emit('teacher:grade-student:' + student.getId(), student, course, grade);
-}
-
-Teacher.prototype.getHalResource = function() {
-  var link = '/' + config.resources.teachers +'?id=' + this.getId();
-  var halResource = new hal.Resource({data:this}, link);
-  return halResource;
-}
-module.exports = Teacher;
+mongoose.model('Teacher', Teacher);
