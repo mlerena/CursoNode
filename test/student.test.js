@@ -36,7 +36,6 @@ describe('Tipoproducto CRUD tests', function() {
       tipoproducto = {
         name: 'Tipoproducto Name'
       };
-
       done();
     });
   });

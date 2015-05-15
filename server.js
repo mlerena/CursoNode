@@ -24,8 +24,7 @@ app.use(bodyParser.json());
 require('./app/routes/student-routes')(app);
 require('./app/routes/teacher-routes')(app);
 require('./app/routes/course-routes')(app);
-
-module.exports = app;
+require('./app/routes/user-routes')(app);
 
 // Start the app by listening on <port>
 app.listen(config.serverPORT);

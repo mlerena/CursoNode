@@ -1,16 +1,36 @@
 var redis = require("redis");
 var redisClient = redis.createClient();
-//var bcrypt = require('bcrypt');
 var mongoose = require('mongoose');
-//var User = mongoose.model('User', require('../models/user'));
+require('../models/user');
+var User = mongoose.model('User');
 
-// if you'd like to select database 3, instead of 0 (default), call
-// client.select(3, function() { /* ... */ });
 
 redisClient.on("error", function (err) {
   console.log("Error " + err);
 });
 
+exports.login = function(req, resp, next) {
+  console.log(req.body.username);
+  console.log(req.body.password);
+  var user = new User();
+  console.log( user.hashPassword(req.body.password));
+  User.find({'username': req.body.username,
+                'password': user.hashPassword(req.body.password)}, function(err, user){
+    console.log(user);
+    console.log(err);
+  });
+
+}
+exports.signup = function(req, resp, next) {
+  console.log(req.body.username);
+  console.log(req.body.password);
+  var user = new User({'username':req.body.username, 'password':req.body.password});
+  user.save(function(err, user){
+    console.log(err);
+    console.log(user);
+    resp.jsonp(user);
+  });
+};
 exports.requireAuthentication = function(req, resp, next) {
   next();
 }

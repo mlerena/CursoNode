@@ -11,7 +11,7 @@ var _ = require('underscore');
 
 
 exports.create = function(req, res) {
-  console.log(req.body);
+
   var teacher = new Teacher(req.body);
 
   teacher.save(function(err) {
