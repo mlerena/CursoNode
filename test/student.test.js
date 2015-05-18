@@ -2,85 +2,110 @@
 
 var should = require('should'),
     request = require('supertest'),
-    app = require('../../server'),
+    app = require('../server'),
     mongoose = require('mongoose'),
     User = mongoose.model('User'),
-    student = mongoose.model('Student'),
+    Student = mongoose.model('Student'),
     agent = request.agent(app);
 
 /**
  * Globals
  */
-var user, tipoproducto;
+var user, student;
 
-/**
- * Tipoproducto routes tests
- */
-describe('Tipoproducto CRUD tests', function() {
-  beforeEach(function(done) {
-    // Create user credentials
+var credentials = {
+  username:'username',
+  password: 'password'
+}
 
-    // Create a new user
-    user = new User({
-      firstName: 'Full',
-      lastName: 'Name',
-      displayName: 'Full Name',
-      email: 'test@test.com',
-      username: credentials.username,
-      password: credentials.password,
-      provider: 'local'
-    });
-
-    // Save a user to the test db and create new Tipoproducto
-    user.save(function() {
-      tipoproducto = {
-        name: 'Tipoproducto Name'
-      };
-      done();
-    });
+var credentialsAdmin = {
+  username:'username',
+  password: 'password'
+}
+var student = {
+  'name' : 'Student Name'
+}
+// create admin and satandar user
+function createUsers(done) {
+  // Create a new user
+  user = new User({
+    username: credentials.username,
+    password: credentials.password,
+    rol: 'local'
   });
 
-  it('should be able to save Tipoproducto instance if logged in', function(done) {
-    agent.post('/auth/signin')
-        .send(credentials)
+   user.save(function() {
+
+    var userAdmin = new User({
+      username: credentialsAdmin.username,
+      password: credentialsAdmin.password,
+      rol: 'admin'
+    });
+    userAdmin.save(function(){
+      done();
+    });
+
+  });
+}
+describe('Student CRUD tests', function() {
+  beforeEach(function(done) {
+
+      createUsers(done);
+  });
+
+  it('should be able to save Student instance if logged in as admin', function(done) {
+    var token = '';
+    request(app).post('/login')
+        .send(credentialsAdmin)
         .expect(200)
         .end(function(signinErr, signinRes) {
           // Handle signin error
+          //console.log(signinRes.res.body.token);
           if (signinErr) done(signinErr);
 
+          token = signinRes.res.body.token;
           // Get the userId
           var userId = user.id;
 
-          // Save a new Tipoproducto
-          agent.post('/tipoproductos')
-              .send(tipoproducto)
+          // Save a new Student
+          request(app).post('/students')
+              .set('Accept', 'application/json')
+              .set('Authorization', 'bearer ' + token)
+              .send(student)
               .expect(200)
-              .end(function(tipoproductoSaveErr, tipoproductoSaveRes) {
-                // Handle Tipoproducto save error
-                if (tipoproductoSaveErr) done(tipoproductoSaveErr);
+              .end(function(saveError, saveResult) {
 
-                // Get a list of Tipoproductos
-                agent.get('/tipoproductos')
-                    .end(function(tipoproductosGetErr, tipoproductosGetRes) {
-                      // Handle Tipoproducto save error
-                      if (tipoproductosGetErr) done(tipoproductosGetErr);
+                if (saveError) {
+                  done(saveError);
+                }
+
+                // Get a list of Students
+                request(app).get('/students')
+                    .set('Accept', 'application/json')
+                    .set('Authorization', 'bearer ' + token)
+                    .end(function(getStudentsError, getStudentsResult) {
+
+
+                      if (getStudentsError) {
+                       // console.log(token);
+                        done(getStudentsError);
+                      }
 
                       // Get Tipoproductos list
-                      var tipoproductos = tipoproductosGetRes.body;
-
+                      var students = getStudentsResult.body;
                       // Set assertions
-                      (tipoproductos[0].user._id).should.equal(userId);
-                      (tipoproductos[0].name).should.match('Tipoproducto Name');
+                      (students[0].name).should.match('Student Name');
 
                       // Call the assertion callback
                       done();
                     });
               });
         });
+    done();
   });
-
-  it('should not be able to save Tipoproducto instance if not logged in', function(done) {
-    agent.post('/tipoproductos')
+/*
+  it('should not be able to save Student instance if not logged in', function(done) {
+    agent.post('/students')
         .send(tipoproducto)
         .expect(401)
         .end(function(tipoproductoSaveErr, tipoproductoSaveRes) {
@@ -254,10 +279,10 @@ describe('Tipoproducto CRUD tests', function() {
 
     });
   });
-
+*/
   afterEach(function(done) {
     User.remove().exec();
-    Tipoproducto.remove().exec();
+    Student.remove().exec();
     done();
   });
 });

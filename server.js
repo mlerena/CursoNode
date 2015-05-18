@@ -2,7 +2,12 @@
 /**
  * Module dependencies.
  */
-var config = require('./config');
+var isInTest = typeof global.it === 'function';
+if (isInTest) {
+  var config = require('./config-test');
+} else {
+  var config = require('./config');
+}
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 
@@ -19,7 +24,9 @@ var app = express();
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
 app.use(bodyParser.json());
+
 
 require('./app/routes/student-routes')(app);
 require('./app/routes/teacher-routes')(app);

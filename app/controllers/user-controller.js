@@ -1,49 +1,73 @@
 var redis = require("redis");
-var redisClient = redis.createClient();
 var mongoose = require('mongoose');
 require('../models/user');
 var User = mongoose.model('User');
-
-
-redisClient.on("error", function (err) {
-  console.log("Error " + err);
-});
+var jwt = require("jsonwebtoken");
 
 exports.login = function(req, resp, next) {
-  console.log(req.body.username);
-  console.log(req.body.password);
-  var user = new User();
-  console.log( user.hashPassword(req.body.password));
-  User.find({'username': req.body.username,
-                'password': user.hashPassword(req.body.password)}, function(err, user){
-    console.log(user);
-    console.log(err);
+
+  User.findOne({'username': req.body.username}, function(err, user){
+   var redisClient = null;
+   var token = '';
+   if(!err) {
+    if (user.password === user.hashPassword(req.body.password)) {
+      redisClient = redis.createClient();
+      token = jwt.sign(user, 'the secret key');
+      redisClient.set(token, JSON.stringify(user), function(err, replay){
+        redisClient.quit();
+        resp.jsonp({'token': token});
+      });
+    }
+   } else {
+     resp.status(500).send({message: "System error"});
+   }
   });
 
 }
 exports.signup = function(req, resp, next) {
-  console.log(req.body.username);
-  console.log(req.body.password);
-  var user = new User({'username':req.body.username, 'password':req.body.password});
+  var user = new User({'username':req.body.username,
+                      'password':req.body.password,
+                      'rol':req.body.rol});
+  var token;
+  var redisClient;
   user.save(function(err, user){
-    console.log(err);
-    console.log(user);
-    resp.jsonp(user);
+    if (!err) {
+      redisClient = redis.createClient();
+      token = jwt.sign(user, 'the secret key');
+      redisClient.set(token, JSON.stringify(user), function(err, replay){
+
+        redisClient.quit();
+        resp.jsonp({'token': token});
+      });
+    } else {
+      resp.res.status(400).send({message: "Wrong user or password"});
+    }
   });
 };
 exports.requireAuthentication = function(req, resp, next) {
-  next();
+
+  var bearerToken;
+  var bearerHeader = req.headers["authorization"];
+  var bearer;
+  var redisClient;
+  if (typeof bearerHeader !== 'undefined') {
+    redisClient = redis.createClient();
+    bearer = bearerHeader.split(" ");
+    bearerToken = bearer[1];
+
+    var user = redisClient.get(bearerToken, function(err, user){
+      if (user) {
+        req.user = JSON.parse(user);
+        req.token = bearerToken;
+        next();
+      } else {
+        resp.status(400).send({message: "invalid token"});
+      }
+    });
+  } else {
+    resp.status(403).send({message: "require authentication"});
+  }
 }
 exports.requireAuthorization = function(req, resp, next) {
   next();
 }
-redisClient.set("string key", "string val", redis.print);
-redisClient.hset("hash key", "hashtest 1", "some value", redis.print);
-redisClient.hset(["hash key", "hashtest 2", "some other value"], redis.print);
-redisClient.hkeys("hash key", function (err, replies) {
-  console.log(replies.length + " replies:");
-  replies.forEach(function (reply, i) {
-    console.log("    " + i + ": " + reply);
-  });
-  redisClient.quit();
-});

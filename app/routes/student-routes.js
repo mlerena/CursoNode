@@ -6,7 +6,7 @@ module.exports = function(app) {
 var coures = require('../../app/controllers/course-controller');
   app.route('/:universityId?/students')
       .get(users.requireAuthentication, students.list)
-      .post(students.create);
+      .post(users.requireAuthentication, students.create);
 
   app.route('/:universityId?/students/:studentId')
       .get(students.read)
